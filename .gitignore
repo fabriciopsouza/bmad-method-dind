@@ -141,3 +141,8 @@ vite.config.ts.timestamp-*
 # BMAD v6: personal answers and workflow output stay local
 _bmad/config.user.toml
 _bmad-output/
+_bmad/*/config.yaml
+
+# Local-only Claude Code files
+.claude/settings.local.json
+CLAUDE.local.md

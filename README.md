@@ -231,7 +231,8 @@ npx bmad-method@latest install --directory . --modules bmm --tools claude-code -
    `bmad-create-epics-and-stories` → `bmad-sprint-planning` → `bmad-build` → `bmad-code-review` → `bmad-retrospective`.
 4. Agent personas: `bmad-agent-analyst`, `bmad-agent-pm`, `bmad-agent-ux-designer`, `bmad-agent-architect`, `bmad-agent-dev`.
 
-Personal answers (name, language) live in `_bmad/config.user.toml`, which is git-ignored. Team overrides go in
+Personal answers (name, communication language) live in `_bmad/config.user.toml`; it and the generated
+`_bmad/*/config.yaml` are git-ignored. Team overrides go in
 `_bmad/custom/config.toml`; use the `bmad-customize` skill to author them.
 
 ## Usage Monitoring & Costs
