@@ -36,7 +36,7 @@ Before you begin, ensure you have the following installed on your local machine:
 
 1. **Setup Container**:
    ```bash
-   git clone https://github.com/vipasane/bmad-method-dind.git
+   git clone https://github.com/fabriciopsouza/bmad-method-dind.git
    cd bmad-method-dind
    ```
 
@@ -57,9 +57,9 @@ Before you begin, ensure you have the following installed on your local machine:
    ```
    Follow the prompts for authentication
 
-5. **Install BMAD-Method**:
+5. **BMAD-Method**: already installed (v6, `_bmad/`). To update:
    ```bash
-   npx bmad-method install
+   npx bmad-method@latest install --directory . --modules bmm --tools claude-code --action update --yes
    ```
 
 6. **Restart Claude Code** (Important for BMAD integration):
@@ -71,8 +71,7 @@ Before you begin, ensure you have the following installed on your local machine:
 
 7. **Start Development**: 
    - Use `claude` to enter Claude Code environment
-   - Access BMAD agents with `*help`, `*analyst`, or `#bmad-orchestrator`
-   - Upload BMAD team files from `./dist/teams/team-fullstack.txt` for full integration
+   - Ask for `bmad-help` to get the recommended next BMAD skill
 
 8. **Optional - Set up Usage Monitoring**:
    ```bash
@@ -88,7 +87,7 @@ Before you begin, ensure you have the following installed on your local machine:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/vipasane/bmad-method-dind.git
+git clone https://github.com/fabriciopsouza/bmad-method-dind.git
 cd bmad-method-dind
 ```
 
@@ -209,92 +208,32 @@ And Follow the installation path
 
 ### BMAD-Method Setup
 
-#### Quick Start Options
+This repository ships BMAD-METHOD **v6** already installed for Claude Code:
 
-##### Option 1: One-Command Installation (Recommended)
+| Path | Content |
+|---|---|
+| `_bmad/` | BMAD core + `bmm` module (installer-managed; customize only in `_bmad/custom/`) |
+| `.claude/skills/bmad-*` | BMAD skills exposed to Claude Code |
+| `_bmad-output/` | Artifacts produced by the workflows (git-ignored) |
+
+#### Install or update
 ```bash
-# Latest version
-npx bmad-method install
+# Update the existing installation (non-interactive)
+npx bmad-method@latest install --directory . --modules bmm --tools claude-code --action update --yes
 
-# OR for stable version
-npx bmad-method@stable install
-
-# Important: Restart Claude Code after installation
-# Exit Claude Code (Ctrl+C or 'exit'), then restart:
-claude
+# Restart Claude Code afterwards: skills are loaded at startup
 ```
 
-##### Option 2: Clone and Install
-```bash
-# Clone the BMAD-Method repository
-git clone https://github.com/bmadcode/bmad-method.git
-cd bmad-method
-npm run install:bmad
+#### Getting started
+1. Open Claude Code in the project folder.
+2. Ask for `bmad-help`: it inspects the project state and recommends the next skill.
+3. Typical flow: `bmad-product-brief` → `bmad-prd` → `bmad-ux` → `bmad-architecture` →
+   `bmad-create-epics-and-stories` → `bmad-sprint-planning` → `bmad-build` → `bmad-code-review` → `bmad-retrospective`.
+4. Agent personas: `bmad-agent-analyst`, `bmad-agent-pm`, `bmad-agent-ux-designer`, `bmad-agent-architect`, `bmad-agent-dev`.
 
-# Important: Restart Claude Code after installation
-claude
-```
-
-##### Option 3: Update Existing Installation
-```bash
-# If BMAD-Method is already installed
-git pull
-npm run install:bmad
-
-# Important: Restart Claude Code after update
-claude
-```
-
-#### Getting Started with BMAD
-
-After installation, you have two paths:
-
-**Fast Web UI Start (2 minutes):**
-1. Get the full stack team file from `/dist/teams/team-fullstack.txt`
-2. Create a new AI agent (Gemini or CustomGPT)
-3. Upload the team file with instructions
-4. Start chatting with `*help` or `*analyst`
-5. Use `#bmad-orchestrator` for guidance
-6. Move to IDE once PRD and architecture are complete
-
-**Direct IDE Development:**
-- Start with the User Guide in `docs/user-guide.md`
-- Explore available AI agents in `bmad-core/agents/`
-- Join the [Discord Community](https://discord.gg/gk8jAdXWmj) for support
-
-#### Key BMAD Features
-- **Automatic Updates**: BMAD preserves your custom configurations while updating
-- **Backup System**: Creates `.bak` files automatically before changes
-- **Expansion Packs**: Supports additional functionality modules
-- **AI Agent Integration**: Built-in support for various AI development workflows
-
-#### Using BMAD with Claude Code
-
-Once Claude Code is installed and BMAD is set up, you can leverage BMAD methodology directly through Claude:
-
-**BMAD Commands in Claude Code:**
-```bash
-# Generate BMAD team files for Claude
-*help                    # Get BMAD assistance
-*analyst                 # Start with BMAD analyst agent
-#bmad-orchestrator      # Use BMAD orchestrator for project guidance
-
-# BMAD workflow integration
-claude /bmad-init        # Initialize BMAD workflow in current project
-claude /bmad-analyze     # Analyze project with BMAD methodology
-claude /bmad-architect   # Generate architecture using BMAD patterns
-```
-
-**Recommended Claude + BMAD Workflow:**
-1. **Planning Phase**: Use `*analyst` to define PRD and requirements
-2. **Architecture Phase**: Use `#bmad-orchestrator` for system design
-3. **Development Phase**: Switch to Claude Code IDE for implementation
-4. **Integration**: Use BMAD expansion packs through Claude commands
-
-**BMAD Team File Integration:**
-- Upload `/dist/teams/team-fullstack.txt` to Claude for comprehensive development support
-- Use BMAD agents directly through Claude Code slash commands
-- Leverage Claude's context with BMAD's structured methodology
+Personal answers (name, communication language) live in `_bmad/config.user.toml`; it and the generated
+`_bmad/*/config.yaml` are git-ignored. Team overrides go in
+`_bmad/custom/config.toml`; use the `bmad-customize` skill to author them.
 
 ## Usage Monitoring & Costs
 
@@ -374,47 +313,17 @@ npx ccusage@latest
 
 ### BMAD-Method Issues
 
-#### Installation Problems
 ```bash
-# Clear npm cache if installation fails
+# Installation fails: clear the npm cache and retry
 npm cache clean --force
-npx bmad-method install
+npx bmad-method@latest install --directory . --modules bmm --tools claude-code --yes
 
-# For permission issues, try with sudo (Linux/macOS)
-sudo npx bmad-method install
+# Skills missing in Claude Code: restart Claude Code; check the skills exist
+ls .claude/skills | grep bmad-
 ```
 
-#### Update Issues
-```bash
-# If updates fail, force reinstall
-rm -rf node_modules
-npm run install:bmad
-```
-
-#### Node.js Version Issues
-- BMAD requires Node.js 20+
-- This container includes the correct version
-- Verify with: `node --version`
-
-#### Claude Code + BMAD Integration Issues
-```bash
-# If BMAD commands don't work in Claude Code
-claude --version        # Verify Claude Code is installed
-bmad-method --version   # Verify BMAD is installed
-
-# Refresh BMAD team files if outdated
-cd BMAD-METHOD
-git pull
-npm run build
-
-# Re-upload team files to Claude if needed
-# File location: ./dist/teams/team-fullstack.txt
-```
-
-**Common Integration Problems:**
-- **BMAD commands not recognized**: Ensure BMAD is installed in the same environment as Claude Code
-- **Team files not working**: Re-download latest team files from `/dist/teams/` directory
-- **Slash commands failing**: Verify GitHub integration is properly configured with `/install-github-app`
+- BMAD requires Node.js 20+ (`node --version`); the container includes it.
+- Do not edit files under `_bmad/` outside `_bmad/custom/`: the installer overwrites them.
 
 ### Usage Monitoring Issues
 
@@ -459,7 +368,6 @@ source ~/.bashrc  # or ~/.zshrc
 - [BMAD-Method Repository](https://github.com/bmad-code-org/BMAD-METHOD)
 - [BMAD User Guide](https://github.com/bmad-code-org/BMAD-METHOD/blob/main/docs/user-guide.md)
 - [Discord Community](https://discord.gg/gk8jAdXWmj)
-- [AI Agents Documentation](https://github.com/bmad-code-org/BMAD-METHOD/blob/main/bmad-core/agents)
 
 ### Additional Tools
 - [Claude Code Documentation](https://github.com/anthropics/claude-code-action/blob/main/docs/setup.md)
